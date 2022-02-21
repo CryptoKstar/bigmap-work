@@ -103,7 +103,7 @@ const DropboxImport = () =>{
           multiselect={true}
           linkType= "direct"
           extensions={['.pdf', '.doc', '.docx', '.*', '*']} >
-          <div className="dropbox-button"><img height="24px" src="./icons/dropbox-icon.png"/></div>        
+          <div className="dropbox-button"><img height="24px" src="./assets/icons/dropbox-icon.png"/></div>        
       </DropboxChooser>
     </div>
   );

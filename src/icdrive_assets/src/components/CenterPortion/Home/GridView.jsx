@@ -219,7 +219,7 @@ const GridView = () => {
         folders.map((value) => (
           <div className="file-div" onDoubleClick={()=>{ switchToFolder(value) }} onDragOver={e=>onDragOver(e)} onDrop={e=>onDrop(e, value)}>
             <div className="grid-view-icon-part">
-              <img id="display-icon" src="./icons/folder.svg" alt="file icon" />
+              <img id="display-icon" src="./assets/icons/folder.svg" alt="file icon" />
             </div>
             <div className="grid-view-text-part truncate-overflow">
               <p align="center">{value}</p>
@@ -239,16 +239,16 @@ const GridView = () => {
                     <div>
                       {
                         value.thumbnail===''?
-                        <img id="display-icon" src="./icons/image-icon.svg" alt="file icon" />
+                        <img id="display-icon" src="./assets/icons/image-icon.svg" alt="file icon" />
                         :
                         <img id="display-icon" src={value.thumbnail} alt="file icon" />
                       }
                     </div>
                     :
                     isPdf(value.mimeType)?
-                    <img id="display-icon" src="./icons/pdf-icon.svg" alt="file icon" />
+                    <img id="display-icon" src="./assets/icons/pdf-icon.svg" alt="file icon" />
                     :
-                    <img id="display-icon" src="./icons/file-icon.svg" alt="file icon" />
+                    <img id="display-icon" src="./assets/icons/file-icon.svg" alt="file icon" />
                   }
                 </div>
                 <div className="grid-view-text-part truncate-overflow">

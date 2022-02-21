@@ -177,16 +177,16 @@ const GridViewMarked = () => {
                     <div>
                       {
                         value.thumbnail===''?
-                        <img id="display-icon" src="./icons/image-icon.svg" alt="file icon" />
+                        <img id="display-icon" src="./assets/icons/image-icon.svg" alt="file icon" />
                         :
                         <img id="display-icon" src={value.thumbnail} alt="file icon" />
                       }
                     </div>
                     :
                     isPdf(value.mimeType)?
-                    <img id="display-icon" src="./icons/pdf-icon.svg" alt="file icon" />
+                    <img id="display-icon" src="./assets/icons/pdf-icon.svg" alt="file icon" />
                     :
-                    <img id="display-icon" src="./icons/file-icon.svg" alt="file icon" />
+                    <img id="display-icon" src="./assets/icons/file-icon.svg" alt="file icon" />
                   }
                 </div>
                 <div className="grid-view-text-part truncate-overflow">

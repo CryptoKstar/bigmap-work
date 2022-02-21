@@ -55,7 +55,7 @@ const SideBar = () => {
             <div className="upload-button">
               <div className="upload-element-section active">
                 <div className="upload-icon-part">
-                  <img src="./icons/upload.svg" alt="upload icon" style={{ height: '22px', color: '#fff' }} />
+                  <img src="./assets/icons/upload.svg" alt="upload icon" style={{ height: '22px', color: '#fff' }} />
                 </div>
                 <div className="upload-text-part">
                   <span>Upload</span>
@@ -68,7 +68,7 @@ const SideBar = () => {
               <div className="upload-button">
                 <div className="upload-element-section inactive">
                   <div className="upload-icon-part">
-                    <img src="./icons/upload.svg" alt="upload icon" style={{ height: '22px', color: '#fff' }} />
+                    <img src="./assets/icons/upload.svg" alt="upload icon" style={{ height: '22px', color: '#fff' }} />
                   </div>
                   <div className="upload-text-part">
                     <span>
@@ -88,7 +88,7 @@ const SideBar = () => {
         <div className="element">
           <div className="element-section" role="button" tabIndex={0} onClick={() => { dispatch(SideBarShow(!sideBarShow)); dispatch(switchHome('home')); }}>
             <div className="side-bar-icon-part">
-              <img src="./icons/home.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
+              <img src="./assets/icons/home.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
             </div>
             <div className="side-bar-text-part">
               <span>Home</span>
@@ -99,7 +99,7 @@ const SideBar = () => {
         <div className="element">
           <div className="element-section" role="button" tabIndex={0} onClick={() => { dispatch(SideBarShow(!sideBarShow)); dispatch(switchShared('shared')); }}>
             <div className="side-bar-icon-part">
-              <img src="./icons/share.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
+              <img src="./assets/icons/share.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
             </div>
             <div className="side-bar-text-part">
               <span>Shared</span>
@@ -110,7 +110,7 @@ const SideBar = () => {
         <div className="element">
           <div className="element-section" role="button" tabIndex={0} onClick={() => { dispatch(SideBarShow(!sideBarShow)); dispatch(switchMarked('marked')); }}>
             <div className="side-bar-icon-part">
-              <img src="./icons/mark.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
+              <img src="./assets/icons/mark.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
             </div>
             <div className="side-bar-text-part">
               <span>Marked</span>
@@ -121,7 +121,7 @@ const SideBar = () => {
         <div className="element">
           <div className="element-section" onClick={() => { setImportModal(!importModal); }}>
             <div className="side-bar-icon-part">
-              <img src="./icons/import.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
+              <img src="./assets/icons/import.svg" alt="home icon" style={{ height: '22px', color: '#fff' }} />
             </div>
             <div className="side-bar-text-part">
               <span>Import</span>

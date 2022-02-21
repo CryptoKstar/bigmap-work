@@ -90,7 +90,7 @@ const GoogleDriveImport = () =>{
 
   return (
     <div className="google-container">
-      <img onClick={()=>handleOpenPicker()} height="24px" src="./icons/google-drive.png" />
+      <img onClick={()=>handleOpenPicker()} height="24px" src="./assets/icons/google-drive.png" />
     </div>
   );
 }
