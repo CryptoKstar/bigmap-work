@@ -108,7 +108,7 @@ const Login = () => {
                     <div id="login-button" onClick={() => handleLogin()}>
                       Login with &nbsp;&nbsp;
                       {' '}
-                      <img src="../../../assets/icons/dfinity.png" alt="dfinity logo" style={{ height: '16px' }} />
+                      <img src="./assets/icons/dfinity.png" alt="dfinity logo" style={{ height: '16px' }} />
                     </div>
                     {/* <a href="https://twitter.com/icDrive" target="_blank">
                       <div className="social-div" role="button" tabIndex={0}>
