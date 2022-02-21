@@ -1,0 +1,39 @@
+{
+  "canisters": {
+    "icdrive": {
+      "main": "src/icdrive/main.mo",
+      "type": "motoko"
+    },
+    "FileHandle": {
+      "main": "src/icdrive/FileHandle.mo",
+      "type": "motoko"
+    },
+    "icdrive_assets": {
+      "dependencies": [
+        "icdrive",
+        "FileHandle"
+      ],
+      "frontend": {
+        "entrypoint": "src/icdrive_assets/src/index.html"
+      },
+      "source": [
+        "src/icdrive_assets/assets",
+        "dist/icdrive_assets/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "dfx": "0.7.2",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
