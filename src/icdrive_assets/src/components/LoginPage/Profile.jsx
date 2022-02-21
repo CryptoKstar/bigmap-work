@@ -54,7 +54,7 @@ const Profile = () => {
       } else {
         if(profile[0].updateCanister){
           const agent = await httpAgentIdentity();
-          const wasm_file = await fetch("./FileHandle.wasm");
+          const wasm_file = await fetch("./assets/FileHandle.wasm");
           const buffer = await wasm_file.arrayBuffer();
           const buffToArray = new Uint8Array(buffer);
           await Actor.install({mode: "upgrade", module: buffToArray }, {agent: agent, canisterId: profile[0].fileCanister.toText()});

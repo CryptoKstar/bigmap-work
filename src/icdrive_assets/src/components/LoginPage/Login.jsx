@@ -25,15 +25,15 @@ const Login = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    setIsLogin(true);
-    // const authClient = await AuthClient.create();
-    // await authClient.login({
-    //   // maxTimeToLive: 9999999999999999999,
-    //   onSuccess: async () => {
-    //     handleAuthenticated(authClient);
-    //   },
-    //   // identityProvider: 'http://localhost:8000/?canisterId=fterm-bydaq-aaaaa-aaaaa-c',
-    // });
+    // setIsLogin(true);
+    const authClient = await AuthClient.create();
+    await authClient.login({
+      // maxTimeToLive: 9999999999999999999,
+      onSuccess: async () => {
+        handleAuthenticated(authClient);
+      },
+      // identityProvider: 'http://localhost:8000/?canisterId=fterm-bydaq-aaaaa-aaaaa-c',
+    });
   };
 
   return (
