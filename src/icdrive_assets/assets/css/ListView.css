@@ -1,9 +1,0 @@
-thead[class*="ant-table-thead"] th{
-  font-weight: bold !important;
-}
-.popconfirm:hover{
-  cursor: pointer;
-}
-#public-url:hover{
-  cursor: pointer;
-}

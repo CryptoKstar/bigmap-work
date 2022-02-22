@@ -1,24 +1,24 @@
 {
   "canisters": {
-    "icdrive": {
-      "main": "src/icdrive/main.mo",
+    "backend": {
+      "main": "backend/main.mo",
       "type": "motoko"
     },
     "FileHandle": {
-      "main": "src/icdrive/FileHandle.mo",
+      "main": "backend/FileHandle.mo",
       "type": "motoko"
     },
-    "icdrive_assets": {
+    "frontend": {
       "dependencies": [
-        "icdrive",
+        "backend",
         "FileHandle"
       ],
       "frontend": {
-        "entrypoint": "src/icdrive_assets/src/index.html"
+        "entrypoint": "frontend/src/index.html"
       },
       "source": [
-        "src/icdrive_assets/assets",
-        "dist/icdrive_assets/"
+        "frontend/assets",
+        "dist/frontend/"
       ],
       "type": "assets"
     }

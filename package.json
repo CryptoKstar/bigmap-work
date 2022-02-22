@@ -4,7 +4,6 @@
   "description": "",
   "keywords": [],
   "scripts": {
-    "lint": "eslint src/icdrive_assets/ .",
     "build": "webpack",
     "start": "webpack serve"
   },
