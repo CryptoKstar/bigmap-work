@@ -1,6 +1,6 @@
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { AuthClient } from '@dfinity/auth-client';
-import { idlFactory as icdriveIdl, canisterId as icdriveId } from 'dfx-generated/icdrive';
+import { idlFactory as icdriveIdl, canisterId as icdriveId } from 'dfx-generated/backend';
 import { idlFactory as FileHandleIdl } from 'dfx-generated/FileHandle';
 
 export const httpAgent = async () => {

@@ -4,20 +4,13 @@
       "main": "backend/main.mo",
       "type": "motoko"
     },
-    "FileHandle": {
-      "main": "backend/FileHandle.mo",
-      "type": "motoko"
-    },
     "frontend": {
-      "dependencies": [
-        "backend",
-        "FileHandle"
-      ],
+      "dependencies": ["backend"],
       "frontend": {
         "entrypoint": "frontend/src/index.html"
       },
       "source": [
-        "frontend/assets",
+        "frontend/src",
         "dist/frontend/"
       ],
       "type": "assets"
