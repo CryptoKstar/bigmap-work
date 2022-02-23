@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {Box, Button, CircularProgress, Grid, Input, Stack, Typography} from  '@mui/material'
+import {Box, Button, CircularProgress, Grid, Input, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from  '@mui/material'
 
 import Resizer from 'react-image-file-resizer';
 import { httpAgent, canisterHttpAgent,httpAgentIdentity } from './src/httpAgent';
@@ -44,6 +44,7 @@ const App  =  () => {
   const [File , setFile] =useState([])
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [allFiles, setAllFiles] = useState([])
   const MAX_CHUNK_SIZE = 1024 * 1024 * 1.5 ; // 1.5MB
 
   const encodeArrayBuffer = (file) => Array.from(new Uint8Array(file));
@@ -116,8 +117,8 @@ const App  =  () => {
         setLoading(false)
       }
     }
-    const allFiles = await userAgent.getFiles()
-    console.log(allFiles,"file")
+    const data = await userAgent.getFiles()
+    setAllFiles(data[0])
   }
 
   const handUpload = async () => {
@@ -142,8 +143,12 @@ const App  =  () => {
     const icdrive = await httpAgent();
     const userName = await icdrive.getUserId()
     localStorage.setItem('UserName', userName[0].toText());
-  })
-
+    if(localStorage.getItem('fileCanister')){
+      const userAgent = await canisterHttpAgent();
+      const data = await userAgent.getFiles()
+      setAllFiles(data[0])
+    }
+  },[])
   return(
     <Box>
       <Grid container p={10}>
@@ -161,7 +166,35 @@ const App  =  () => {
         </Grid>
 
         <Grid item md={6}>
-
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell align="center">FileName</TableCell>
+                  <TableCell align="center">Size</TableCell>
+                  <TableCell align="center">CanisterId</TableCell>
+                  <TableCell align="center">UserName</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {allFiles.map((item, key) => (
+                  <TableRow
+                    key={key}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {key + 1}
+                    </TableCell>
+                    <TableCell align="center">{item.name}</TableCell>
+                    <TableCell align="center">{Math.floor(Number(item.fileSize)/1024)} KB</TableCell>
+                    <TableCell align="center">{localStorage.getItem('fileCanister')}</TableCell>
+                    <TableCell align="center">{item.userName}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
 
       </Grid>
