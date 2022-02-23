@@ -38,14 +38,14 @@ shared (msg) actor class icdrive (){
   stable var feedback : [Text] = [];
   stable var userCount : Nat = 0;
 
-  public shared(msg) func createCanister() : async ?CanisterData {
-    // switch(user.findOne(msg.caller)){
-    //   case null{
+  public shared(msg) func createCanister(userName: UserName) : async ?FileCanister {
+    switch(user.findOne(msg.caller)){
+      case null{
         Cycles.add(600_000_000_000);
         let fileHandleObj = await FileHandle.FileHandle(); // dynamically install a new Canister
         
         let canId = await fileHandleObj.createOwner(msg.caller);
-        // user.createOne(msg.caller, userName, canId, email);
+        user.createOne(msg.caller, userName, canId, userName);
         
         let settings: CanisterSettings = {
           controllers = [admin, msg.caller];
@@ -55,16 +55,19 @@ shared (msg) actor class icdrive (){
             settings = settings;
         };
         await IC.update_settings(params);
-        // userCount := userCount + 1;
-        let data : CanisterData = {
-          canister_data = [canId ,msg.caller];
-        };
-        return(?data)
-    //   };
-    //   case (?_){
-    //     return(null);
-    //   };
-    // }
+        userCount := userCount + 1;
+        
+        return(?canId);
+      };
+      case (?_){
+        return(null);
+      };
+    }
+  };
+
+
+  public shared(msg) func getUserId() : async ?Principal {
+    return(?msg.caller)
   };
 
   public shared(msg) func createProfile(userName: UserName, email: Text) : async ?FileCanister {

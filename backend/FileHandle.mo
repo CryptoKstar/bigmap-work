@@ -67,7 +67,7 @@ shared (msg) actor class FileHandle (){
               sharedWith = [];
               madePublic = false;
               fileHash = "";
-              folder = fileData.folder;
+              folder = "";
             });
 
           ?fileId
