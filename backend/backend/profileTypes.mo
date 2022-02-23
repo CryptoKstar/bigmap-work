@@ -14,6 +14,9 @@ module {
       canister_id: Principal;
       settings: CanisterSettings;
   };
+  public type CanisterData = {
+      canister_data: [Principal];
+  };
   public type ICActor = actor {
       update_settings: shared(params: UpdateSettingsParams) -> async ();
   };
