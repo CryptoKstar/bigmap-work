@@ -1,18 +1,19 @@
 import Array "mo:base/Array";
-import Buffer "mo:base/Buffer";
 import Blob "mo:base/Blob";
 import Bool "mo:base/Bool";
-import Debug "mo:base/Debug";
+import Buffer "mo:base/Buffer";
 import Cycles "mo:base/ExperimentalCycles";
+import Debug "mo:base/Debug";
 import Int "mo:base/Int";
 import Iter "mo:base/Iter";
 import Nat "mo:base/Nat";
+import Nat16 "mo:base/Nat16";
 import Nat8 "mo:base/Nat8";
 import Principal "mo:base/Principal";
 import Text "mo:base/Text";
 import Time "mo:base/Time";
 import TrieMap "mo:base/TrieMap";
-import Nat16 "mo:base/Nat16";
+
 import FileTypes "./backend/fileTypes";
 
 shared (msg) actor class FileHandle (){
@@ -63,7 +64,6 @@ shared (msg) actor class FileHandle (){
       };
       case (null) null;
     };
-
     {
       body=body;
       token=next_token;
@@ -93,10 +93,9 @@ shared (msg) actor class FileHandle (){
       // Debug.print("FileData: " # debug_show(fileData));
       _body := state.chunks.get(chunkId(fileId!, chunkNum))!;
       _headers := [
-        ("Content-Type",fileData.filetype),
-        // ("Content-Length",Nat.toText(fileData.size-1)),
+        ("Content-Type","text/plain"),
         ("Transfer-Encoding", "chunked"),
-        ("Content-Disposition",fileData.contentDisposition)
+        ("Content-Disposition","inline")
       ];
       _status_code:=200;
       if (fileData.chunkCount > 1){
@@ -117,7 +116,24 @@ shared (msg) actor class FileHandle (){
       headers=_headers;
       body=_body;
       streaming_strategy=_streaming_strategy;
-    };
+  };
+
+  func getFileInfoData(fileId : FileId) : ?FileData {
+      do ? {
+          let v = state.files2.get(fileId)!;
+            {
+            fileId = v.fileId;
+            userName = v.userName;
+            name = v.name;
+            size = v.fileSize;
+            chunkCount = v.chunkCount;
+            filetype = v.mimeType;
+            createdAt = v.createdAt;
+            uploadedAt = v.createdAt;
+            contentDisposition = v.contentDisposition;
+          }
+      }
+  };
 
   public shared(msg) func createOwner(newOwner: Principal) : async Principal {
     assert(msg.caller==owner);
@@ -144,7 +160,7 @@ shared (msg) actor class FileHandle (){
             thumbnail = fileData.thumbnail;
             marked = fileData.marked;
             sharedWith = [];
-            madePublic = false;
+            madePublic = true;
             fileHash = "";
             folder = "";
           });
