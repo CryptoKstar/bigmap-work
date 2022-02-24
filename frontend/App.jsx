@@ -142,10 +142,12 @@ const App  =  () => {
   useEffect( async () => {
     const icdrive = await httpAgent();
     const userName = await icdrive.getUserId()
-    const canister = await icdrive.getProfile()
-    const canId = canister[0].fileCanister.toText()
-    localStorage.setItem('fileCanister', canId);
     localStorage.setItem('UserName', userName[0].toText());
+    const canister = await icdrive.getProfile()
+    if(canister){
+      const canId = canister[0].fileCanister.toText()
+      localStorage.setItem('fileCanister', canId);
+    }
     if(localStorage.getItem('fileCanister')){
       const userAgent = await canisterHttpAgent();
       const data = await userAgent.getFiles()

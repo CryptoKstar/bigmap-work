@@ -54,23 +54,22 @@ shared (msg) actor class FileHandle (){
     switch (state.files2.get(fileId)) {
     case (?_) { /* error -- ID already taken. */ null };
     case null { /* ok, not taken yet. */
-            state.files2.put(fileId, {
-              fileId = fileId;
-              userName = userName;
-              name = fileData.name;
-              createdAt = now;
-              chunkCount = fileData.chunkCount;
-              fileSize = fileData.fileSize;
-              mimeType = fileData.mimeType;
-              thumbnail = fileData.thumbnail;
-              marked = fileData.marked;
-              sharedWith = [];
-              madePublic = false;
-              fileHash = "";
-              folder = "";
-            });
-
-          ?fileId
+          state.files2.put(fileId, {
+            fileId = fileId;
+            userName = userName;
+            name = fileData.name;
+            createdAt = now;
+            chunkCount = fileData.chunkCount;
+            fileSize = fileData.fileSize;
+            mimeType = fileData.mimeType;
+            thumbnail = fileData.thumbnail;
+            marked = fileData.marked;
+            sharedWith = [];
+            madePublic = false;
+            fileHash = "";
+            folder = "";
+          });
+        return(?fileId)
         };
     };
   };
