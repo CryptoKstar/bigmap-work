@@ -94,7 +94,7 @@ shared (msg) actor class FileHandle (){
       // Debug.print("FileData: " # debug_show(fileData));
       _body := state.chunks.get(chunkId(fileId!, chunkNum))!;
       _headers := [
-        ("Content-Type","text/plain"),
+        ("Content-Type",fileData.filetype),
         ("Transfer-Encoding", "chunked"),
         ("Content-Disposition","inline")
       ];

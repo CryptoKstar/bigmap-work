@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {Box, Button, CircularProgress, Grid, Input, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from  '@mui/material'
+import {Box, Button, CircularProgress, Grid, Input, Link, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from  '@mui/material'
 
 import Resizer from 'react-image-file-resizer';
 import { httpAgent, canisterHttpAgent,httpAgentIdentity } from './src/httpAgent';
@@ -181,6 +181,7 @@ const App  =  () => {
                   <TableCell align="center">Size</TableCell>
                   <TableCell align="center">CanisterId</TableCell>
                   <TableCell align="center">UserName</TableCell>
+                  <TableCell align="center">Stream</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -196,6 +197,8 @@ const App  =  () => {
                     <TableCell align="center">{Math.floor(Number(item.fileSize)/1024)} KB</TableCell>
                     <TableCell align="center">{localStorage.getItem('fileCanister')}</TableCell>
                     <TableCell align="center">{item.userName}</TableCell>
+                    <TableCell align="center">
+                      <Link href={`http://127.0.0.1:8000/storage?canisterId=${localStorage.getItem("fileCanister")}&fileId=${item.fileId}`}>Stream</Link></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
