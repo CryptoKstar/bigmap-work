@@ -151,6 +151,7 @@ const App  =  () => {
     if(localStorage.getItem('fileCanister')){
       const userAgent = await canisterHttpAgent();
       const data = await userAgent.getFiles()
+      console.log(data[0])
       setAllFiles(data[0])
     }
   },[])

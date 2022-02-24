@@ -26,12 +26,13 @@ shared (msg) actor class FileHandle (){
   public type FileInfo = FileTypes.FileInfo;
   public type FileInfo2 = FileTypes.FileInfo2;
   public type FileInit = FileTypes.FileInit;
-  public type StreamingCallbackToken = FileTypes.StreamingCallbackToken
-  public type StreamingCallbackHttpResponse = FileTypes.StreamingCallbackHttpResponse
-  public type StreamingCallback = FileTypes.StreamingCallback
-  public type StreamingStrategy = FileTypes.StreamingStrategy
-  public type HttpRequest = FileTypes.HttpRequest
-  public type HttpResponse = FileTypes.HttpResponse
+  public type StreamingCallbackToken = FileTypes.StreamingCallbackToken;
+  public type StreamingCallbackHttpResponse = FileTypes.StreamingCallbackHttpResponse;
+  public type StreamingCallback = FileTypes.StreamingCallback;
+  public type StreamingStrategy = FileTypes.StreamingStrategy;
+  public type FileData = FileTypes.FileData;
+  public type HttpRequest = FileTypes.HttpRequest;
+  public type HttpResponse = FileTypes.HttpResponse;
 
   stable var fileEntries : [(FileId, FileInfo)] = [];
   stable var chunkEntries : [(ChunkId, ChunkData)] = [];
@@ -49,7 +50,7 @@ shared (msg) actor class FileHandle (){
     msg.caller;
   };
 
-  public query func streamingCallback(token:StreamingCallbackToken): async StreamingCallbackResponse {
+  public query func streamingCallback(token:StreamingCallbackToken): async StreamingCallbackHttpResponse {
     Debug.print("Sending chunk " # debug_show(token.key) # debug_show(token.index));
     let body:Blob = switch(state.chunks.get(chunkId(token.key, token.index))) {
       case (?b) b;
@@ -116,12 +117,13 @@ shared (msg) actor class FileHandle (){
       headers=_headers;
       body=_body;
       streaming_strategy=_streaming_strategy;
+    };
   };
 
   func getFileInfoData(fileId : FileId) : ?FileData {
       do ? {
           let v = state.files2.get(fileId)!;
-            {
+          {
             fileId = v.fileId;
             userName = v.userName;
             name = v.name;
@@ -130,9 +132,8 @@ shared (msg) actor class FileHandle (){
             filetype = v.mimeType;
             createdAt = v.createdAt;
             uploadedAt = v.createdAt;
-            contentDisposition = v.contentDisposition;
-          }
-      }
+          };
+      };
   };
 
   public shared(msg) func createOwner(newOwner: Principal) : async Principal {

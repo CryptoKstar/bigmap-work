@@ -16,7 +16,7 @@ module {
   public type ChunkId = Text; // FileId # (toText(ChunkNum))
   public type ChunkData = Blob; // encoded as ??
   public type Map<X, Y> = TrieMap.TrieMap<X, Y>;
-
+  public type Timestamp =Int;
   public type StreamingCallbackToken = {
     key : Text;
     content_encoding : Text;
@@ -24,9 +24,20 @@ module {
     sha256: ?[Nat8];
   };
 
+  public type FileData = {
+    fileId : FileId;
+    userName : Text;
+    uploadedAt : Timestamp;
+    createdAt : Timestamp;
+    chunkCount: Nat;    
+    name: Text;
+    size: Nat;
+    filetype: Text;
+  };
+
   public type StreamingCallbackHttpResponse = {
-    token : ?StreamingCallbackToken;
     body : Blob;
+    token : ?StreamingCallbackToken;
   };
 
   public type StreamingCallback = query StreamingCallbackToken  -> async StreamingCallbackHttpResponse;
