@@ -12,6 +12,7 @@ import Principal "mo:base/Principal";
 import Text "mo:base/Text";
 import Time "mo:base/Time";
 import TrieMap "mo:base/TrieMap";
+import Nat16 "mo:base/Nat16";
 import FileTypes "./backend/fileTypes";
 
 shared (msg) actor class FileHandle (){
@@ -24,6 +25,12 @@ shared (msg) actor class FileHandle (){
   public type FileInfo = FileTypes.FileInfo;
   public type FileInfo2 = FileTypes.FileInfo2;
   public type FileInit = FileTypes.FileInit;
+  public type StreamingCallbackToken = FileTypes.StreamingCallbackToken
+  public type StreamingCallbackHttpResponse = FileTypes.StreamingCallbackHttpResponse
+  public type StreamingCallback = FileTypes.StreamingCallback
+  public type StreamingStrategy = FileTypes.StreamingStrategy
+  public type HttpRequest = FileTypes.HttpRequest
+  public type HttpResponse = FileTypes.HttpResponse
 
   stable var fileEntries : [(FileId, FileInfo)] = [];
   stable var chunkEntries : [(ChunkId, ChunkData)] = [];
@@ -40,6 +47,78 @@ shared (msg) actor class FileHandle (){
   public query(msg) func getCanisterID() : async Principal{
     msg.caller;
   };
+
+  public query func streamingCallback(token:StreamingCallbackToken): async StreamingCallbackResponse {
+    Debug.print("Sending chunk " # debug_show(token.key) # debug_show(token.index));
+    let body:Blob = switch(state.chunks.get(chunkId(token.key, token.index))) {
+      case (?b) b;
+      case (null) "404 Not Found";
+    };
+    let next_token:?StreamingCallbackToken = switch(state.chunks.get(chunkId(token.key, token.index+1))){
+      case (?nextbody) ?{
+        content_encoding=token.content_encoding;
+        key = token.key;
+        index = token.index+1;
+        sha256 = null;
+      };
+      case (null) null;
+    };
+
+    {
+      body=body;
+      token=next_token;
+    };
+  };
+
+
+  public query func http_request(req: HttpRequest) : async HttpResponse {
+    // url format: raw.ic0.app/storage?canisterId=<bucketId>&fileId=<fileId>=<fileId>
+    // http://127.0.0.1:8000/storage?canisterId=<bucketId>&fileId=testfile.txt25
+    var _status_code:Nat16=404;
+    var _headers = [("Content-Type","text/html"), ("Content-Disposition","inline")];
+    var _body:Blob = "404 Not Found";
+    var _streaming_strategy:?StreamingStrategy = null;
+    let _ = do ? {
+      let storageParams:Text = Text.stripStart(req.url, #text("/storage?"))!;
+      let fields:Iter.Iter<Text> = Text.split(storageParams, #text("&"));
+      var fileId:?FileId=null;
+      var chunkNum:Nat=1;
+      for (field:Text in fields){
+        let kv:[Text] = Iter.toArray<Text>(Text.split(field,#text("=")));
+        if (kv[0]=="fileId"){
+          fileId:=?kv[1];
+        }
+      };
+      let fileData:FileData = getFileInfoData(fileId!)!;
+      // Debug.print("FileData: " # debug_show(fileData));
+      _body := state.chunks.get(chunkId(fileId!, chunkNum))!;
+      _headers := [
+        ("Content-Type",fileData.filetype),
+        // ("Content-Length",Nat.toText(fileData.size-1)),
+        ("Transfer-Encoding", "chunked"),
+        ("Content-Disposition",fileData.contentDisposition)
+      ];
+      _status_code:=200;
+      if (fileData.chunkCount > 1){
+        _streaming_strategy := ?#Callback({
+          token = {
+            content_encoding="gzip";
+            key=fileId!;
+            index=chunkNum; //starts at 1
+            sha256=null;
+          };
+          callback = streamingCallback;
+        });
+      };
+
+    };
+    return {
+      status_code=_status_code;
+      headers=_headers;
+      body=_body;
+      streaming_strategy=_streaming_strategy;
+    };
+
   public shared(msg) func createOwner(newOwner: Principal) : async Principal {
     assert(msg.caller==owner);
     owner := newOwner;

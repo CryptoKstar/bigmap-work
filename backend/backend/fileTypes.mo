@@ -5,6 +5,8 @@ import Int "mo:base/Int";
 import Bool "mo:base/Bool";
 import Blob "mo:base/Blob";
 import Nat8 "mo:base/Nat8";
+import Hash "mo:base/Hash";
+import Trie "mo:base/Trie";
 
 module {
   
@@ -14,6 +16,41 @@ module {
   public type ChunkId = Text; // FileId # (toText(ChunkNum))
   public type ChunkData = Blob; // encoded as ??
   public type Map<X, Y> = TrieMap.TrieMap<X, Y>;
+
+  public type StreamingCallbackToken = {
+    key : Text;
+    content_encoding : Text;
+    index : Nat; //starts at 1
+    sha256: ?[Nat8];
+  };
+
+  public type StreamingCallbackHttpResponse = {
+    token : ?StreamingCallbackToken;
+    body : Blob;
+  };
+
+  public type StreamingCallback = query StreamingCallbackToken  -> async StreamingCallbackHttpResponse;
+
+  public type StreamingStrategy = {
+    #Callback: {
+      token : StreamingCallbackToken;
+      callback : StreamingCallback
+    }
+  };
+
+  public type HttpRequest = {
+    method: Text;
+    url: Text;
+    headers: [(Text, Text)];
+    body: Blob;
+  };
+
+  public type HttpResponse = {
+    status_code: Nat16;
+    headers: [(Text, Text)];
+    body: Blob;
+    streaming_strategy : ?StreamingStrategy;
+  };
 
   public type FileInit = {
     name: Text;
